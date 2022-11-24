@@ -94,6 +94,18 @@ func stringManipulation(argument string) []string {
 			remove(strArray, i)
 			remove(strArray, i)
 
+		case "(up,":
+			// Remove ")" from 6)
+			nextWord := strings.TrimSuffix(strArray[i+1], ")")
+			// Convert string to int
+			nextWordCount, _ := strconv.Atoi(nextWord)
+			// Lowercases the number of previous words from current index
+			for j := 0; j <= nextWordCount; j++ {
+				strArray[i-j] = strings.ToUpper(strArray[i-j])
+			}
+			remove(strArray, i)
+			remove(strArray, i)
+
 		// Replace word with decimanl version
 		case "(hex)":
 			num, err3 := strconv.ParseInt(strArray[i-1], 16, 64)
@@ -123,6 +135,14 @@ func stringManipulation(argument string) []string {
 			switch nextLetter {
 			case "a", "e", "i", "o", "u", "A", "E", "I", "O", "U":
 				strArray[i] = "an"
+			}
+		// Change A to An if next word starts with a vowel
+		case "A":
+			nextWord := strArray[i+1]
+			nextLetter := nextWord[:1]
+			switch nextLetter {
+			case "a", "e", "i", "o", "u", "A", "E", "I", "O", "U":
+				strArray[i] = "An"
 			}
 		}
 	}
